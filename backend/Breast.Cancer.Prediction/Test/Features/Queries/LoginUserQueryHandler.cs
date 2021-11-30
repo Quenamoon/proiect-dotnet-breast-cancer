@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Domain.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Queries
 {
-    public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Guid>
+    public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, User>
     {
         private readonly IUserRepository repository;
 
@@ -16,19 +17,19 @@ namespace Application.Features.Queries
         {
             this.repository = repository;
         }
-        public async Task<Guid> Handle(LoginUserQuery request, CancellationToken cancellationToken)
+        public async Task<User> Handle(LoginUserQuery request, CancellationToken cancellationToken)
         {
             User user = await repository.GetByEmailAsync(request.Email);
             if (user == null || user.Id == Guid.Empty)
             {
-                throw new ArgumentException("User doesn't exist!");
+                throw new EntityNotFoundException("User doesn't exist!");
             }
 
             if (user.Password != request.Password)
             {
-                throw new ArgumentException("Password missmatch!");
+                throw new InvalidCredentialsException("Password missmatch!");
             }
-            return user.Id;
+            return user;
         }
     }
 }

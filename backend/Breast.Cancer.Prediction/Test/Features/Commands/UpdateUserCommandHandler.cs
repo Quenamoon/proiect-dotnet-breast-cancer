@@ -18,7 +18,7 @@ namespace Application.Features.Commands
         public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var user = repository.GetByIdAsync(request.Id).Result;
-            if(user == null || user.Id == Guid.Empty)
+            if(user == null)
             {
                 throw new EntityNotFoundException("User doesn't exist!");
             }

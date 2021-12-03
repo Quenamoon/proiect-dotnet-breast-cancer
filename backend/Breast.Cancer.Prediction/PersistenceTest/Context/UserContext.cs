@@ -7,10 +7,10 @@ namespace Persistence.Context
 {
     public class UserContext : DbContext, IApplicationContext
     {
-        public UserContext()
-        {
+        //public UserContext()
+        //{
 
-        }
+        //}
         public UserContext(DbContextOptions<UserContext> options) : base(options)
         {
             
@@ -21,5 +21,10 @@ namespace Persistence.Context
         {
             return await base.SaveChangesAsync();
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlite("Data Source=MyUsers.db");
+        //}
     }
 }

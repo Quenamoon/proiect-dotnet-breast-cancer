@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Application.Features.Queries
 {
@@ -22,13 +23,14 @@ namespace Application.Features.Queries
             User user = await repository.GetByEmailAsync(request.Email);
             if (user == null || user.Id == Guid.Empty)
             {
-                throw new EntityNotFoundException("User doesn't exist!");
+                throw new EntityNotFoundException("Username is incorrect");
             }
 
-            if (user.Password != request.Password)
+            if(!BC.Verify(request.Password, user.Password))
             {
-                throw new InvalidCredentialsException("Password missmatch!");
+                throw new InvalidCredentialsException("Password mismatch!");
             }
+
             return user;
         }
     }

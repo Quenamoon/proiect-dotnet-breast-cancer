@@ -53,6 +53,7 @@ namespace WebAPI
                     new string[] { }
                 }
                 });
+                c.EnableAnnotations();
             });
             services.AddPersistence(Configuration);
             services.AddMediatR(typeof(LoginUserQueryHandler));

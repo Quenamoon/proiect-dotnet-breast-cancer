@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Controllers.v1.Filters;
 using WebAPI.Utils.RegexUtils;
@@ -26,20 +24,14 @@ namespace WebAPI.Controllers.v1
         [HttpPost][JwtAuthentication]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
-            /* var accessToken = Request.Headers[HeaderNames.Authorization];
-             var handler = new JwtSecurityTokenHandler();
-             var jwtToken = handler.ReadJwtToken(accessToken.ToString());
-             var jti = jwtToken.Claims.First(claim => claim.Type == "email").Value;*/
-
             var accessToken = Request.Headers[HeaderNames.Authorization];
             var claims = JwtManager.GetPrincipal(accessToken);
-            string userType = claims.FindFirst("UserType").Value;
-            if(userType == "patient")
+            string loggedType = claims.FindFirst("UserType").Value;
+            if (loggedType == "patient")
             {
                 return Forbid("You don't have permission to create a new user!");
             }
-
-            command.SetUserType(userType);
+            command.UserType = (loggedType == "admin") ? "doctor" : "patient";
 
             if (!StringValidator.isValidEmail(command.Email))
             {

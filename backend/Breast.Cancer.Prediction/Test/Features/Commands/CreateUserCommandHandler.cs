@@ -24,12 +24,11 @@ namespace Application.Features.Commands
                 throw new EntityAlreadyExistsException("Email already in use!");
             }
 
-            string RequestedUserType = (request.GetUserType() == "admin") ? "medic" : "patient";
             var user = new User
             {
                 Email = request.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                UserType = RequestedUserType
+                UserType = request.UserType
             };
             await repository.AddAsync(user);
             return user.Id;

@@ -1,0 +1,44 @@
+.table-container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+table {
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: #e500a4;
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+tr {
+  background-color: #fcdef0;
+}
+tr:nth-child(even) {
+  background-color: #fac6e5;
+}
+
+.analysis-details {
+  background-color: red;
+  display: none;
+}
+
+.buttonActive {
+  text-align: center;
+}
+.buttonInactive {
+  text-align: center;
+}

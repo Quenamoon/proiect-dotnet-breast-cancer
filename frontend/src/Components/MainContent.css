@@ -1,0 +1,153 @@
+.content-container {
+  height: calc(100vh - 5rem);
+  display: flex;
+}
+
+.button-container {
+  display: flex;
+}
+
+.pacient-button {
+  flex: 1;
+  background-color: #e500a4;
+  border: 1px solid black;
+  text-align: center;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.prediction-button {
+  background-color: #e500a4;
+  border: 1px solid black;
+  text-align: center;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+}
+
+.expand-button {
+  background-color: #e500a4;
+  border: 1px solid black;
+  text-align: center;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.expand-button:hover,
+.expand-button:focus {
+  background-color: #f082ac;
+}
+
+.pacient-button:hover,
+.pacient-button:focus {
+  background-color: #f082ac;
+}
+
+.prediction-button:hover,
+.prediction-button:focus {
+  background-color: #f082ac;
+}
+
+/* .pacient-button:first-child {
+  margin-right: 5px;
+} */
+
+.flex-child {
+  overflow: auto;
+  flex: 1;
+  background-color: #ffc6ff;
+  border: 1px solid white;
+  border-radius: 8px;
+  text-align: center;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  color: black;
+  padding: 10px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fbf3f4;
+  border-radius: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #e500a4;
+  border-radius: 8px;
+}
+
+/* .flex-child:first-child {
+  margin-right: 10px;
+} */

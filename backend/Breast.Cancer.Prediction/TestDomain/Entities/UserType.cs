@@ -1,7 +1,9 @@
 ﻿
+using System.ComponentModel;
+
 namespace Domain.Entities
 {
-    enum UserType
+    public enum UserType
     {
         Admin,
         Doctor,

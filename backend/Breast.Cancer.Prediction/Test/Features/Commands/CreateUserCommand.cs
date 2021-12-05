@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Domain.Entities;
+using MediatR;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 

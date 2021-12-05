@@ -28,7 +28,7 @@ namespace Application.Features.Commands
             {
                 Email = request.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                UserType = request.UserType
+                UserTypeString = request.UserType
             };
             await repository.AddAsync(user);
             return user.Id;

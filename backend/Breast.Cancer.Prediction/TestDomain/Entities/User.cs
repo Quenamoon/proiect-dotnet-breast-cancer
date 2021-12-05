@@ -11,6 +11,13 @@ namespace Domain.Entities
         [Column("password")]
         public string Password { get; set; }
         [Column("usertype")]
-        public string UserType { get; set; }
+        public string UserTypeString
+        {
+            get { return UserType.ToString(); }
+            set { UserType = value.ParseEnum<UserType>(); }
+        }
+
+        [NotMapped]
+        public UserType UserType { get; set; }
     }
 }

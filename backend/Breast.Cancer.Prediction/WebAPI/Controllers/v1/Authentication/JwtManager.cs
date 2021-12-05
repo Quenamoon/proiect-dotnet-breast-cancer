@@ -9,7 +9,7 @@ namespace WebAPI.Controllers.v1
     {
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        public static string GenerateToken(string email, string userType, int expireMinutes = 20)
+        public static string GenerateToken(Guid id, string email, string userType, int expireMinutes = 20)
         {
             var symmetricKey = Convert.FromBase64String(Secret);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -19,6 +19,7 @@ namespace WebAPI.Controllers.v1
             {
                 Subject = new ClaimsIdentity(new[]
                         {
+                            new Claim("id", id.ToString()),
                             new Claim("email", email),
                             new Claim("userType", userType)
                         }),

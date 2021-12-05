@@ -1,10 +1,16 @@
 ﻿using Application.Features.Commands;
 using Application.Features.Queries;
+using Domain.Entities;
 using Domain.Exceptions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using System;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using WebAPI.Controllers.v1.Filters;
+using WebAPI.Utils.RegexUtils;
 
 namespace WebAPI.Controllers.v1
 {
@@ -18,8 +24,33 @@ namespace WebAPI.Controllers.v1
         }
 
         [HttpPost]
+        [JwtAuthentication]//todo [JwtAuthentication] should not allow access
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
+            var authorization = Request.Headers[HeaderNames.Authorization];
+            var token = authorization.ToString();
+            if (token == "")
+                return Forbid("You don't have permission to create a new user!");
+            if (token.StartsWith("Bearer "))
+                token = token.Substring("Bearer ".Length);
+            var claims = JwtManager.GetPrincipal(token);
+            UserType loggedType = claims.FindFirst("userType").Value.ParseEnum<UserType>();
+            if (loggedType == UserType.Patient)
+            {
+                return Forbid("You don't have permission to create a new user!");
+            }
+            command.UserType = ((loggedType == UserType.Admin) ? UserType.Doctor : UserType.Patient).ToString();
+
+            if (!StringValidator.isValidEmail(command.Email))
+            {
+                return BadRequest("Invalid email!");
+            }
+
+            if (command.Password.Length < 8)
+            {
+                return BadRequest("Invalid password format!");
+            }
+
             try
             {
                 return Ok(await mediator.Send(command));
@@ -37,20 +68,21 @@ namespace WebAPI.Controllers.v1
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetJwt([FromBody] LoginUserQuery command)
         {
             try
             {
                 var user = await mediator.Send(command);
-                return Ok(JwtManager.GenerateToken(user.Email, user.UserType));
+                return Ok(JwtManager.GenerateToken(user.Id, user.Email, user.UserTypeString));
             }
-            catch (InvalidCredentialsException e)
+            catch (Exception ex)
             {
-                return Unauthorized(e.Message);
-            }
-            catch (EntityNotFoundException e)
-            {
-                return BadRequest(e.Message);
+                if (ex is InvalidCredentialsException || ex is EntityNotFoundException)
+                {
+                    return Unauthorized("Username or password is incorrect!");
+                }
+                throw;
             }
         }
 
@@ -71,6 +103,17 @@ namespace WebAPI.Controllers.v1
             }
         }
 
-
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] DeleteUserCommand command)
+        {
+            try
+            {
+                return Ok(await mediator.Send(command));
+            }
+            catch (EntityNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

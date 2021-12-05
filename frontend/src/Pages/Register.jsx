@@ -7,6 +7,7 @@ import "./Auth.css";
 
 const Register = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const JWTToken = useSelector((state) => state.auth.JWToken);
   const userType = useSelector((state) => state.auth.userType);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -16,13 +17,14 @@ const Register = () => {
     //If already exists -> show error that email already exists
     //Otherwise check the JWT for the type and send the request to the backend (must be logged in for this, otherwise -> login page)
     //Test
-    const data = { email: details.userEmail, password: details.userPassword, firstName: details.userFirstName, lastName: details.userLastName, userType: userType === "admin" ? "medic" : "patient" }
+    const data = { email: details.userEmail, password: details.userPassword, firstName: details.userFirstName, lastName: details.userLastName, userType: userType === "Admin" ? "Doctor" : "Patient" }
     try {
-      const response = await fetch('https://localhost:5001/api/users', {
+      const response = await fetch('https://localhost:44333/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + JWTToken
         },
         body: JSON.stringify(data)
       })

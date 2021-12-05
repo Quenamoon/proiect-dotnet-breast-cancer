@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Domain.Entities;
+using MediatR;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 
 namespace Application.Features.Commands
@@ -9,6 +11,7 @@ namespace Application.Features.Commands
 
         public string Password { get; set; }
 
+        [SwaggerSchema(ReadOnly = true)]
         public string UserType { get; set; }
     }
 }

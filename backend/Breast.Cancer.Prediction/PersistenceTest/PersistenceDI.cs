@@ -12,6 +12,9 @@ namespace Persistence
         {
             services.AddDbContext<UserContext>(options => options.UseNpgsql(configuration.GetConnectionString("DatabaseConnection"), b => b.MigrationsAssembly(typeof(UserContext).Assembly.FullName)));
             services.AddScoped<IApplicationContext>(provider => provider.GetService<UserContext>());
+
+            services.AddDbContext<PredictionDataContext>(options => options.UseNpgsql(configuration.GetConnectionString("DatabaseConnection"), b => b.MigrationsAssembly(typeof(PredictionDataContext).Assembly.FullName)));
+            services.AddScoped<IApplicationContext>(provider => provider.GetService<PredictionDataContext>());
         }
     }
 }

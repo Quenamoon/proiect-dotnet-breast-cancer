@@ -16,6 +16,7 @@ namespace Persistence.Context
             
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<PredictionData> Predictions { get; set; }
 
         public async Task<int> SaveChangesAsync()
         {

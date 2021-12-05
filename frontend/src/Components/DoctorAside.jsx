@@ -37,10 +37,10 @@ const DoctorAside = () => {
       <center>
         <img
           className="profile_image"
-          src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg"
+          src="https://media.istockphoto.com/vectors/breast-cancer-awareness-with-realistic-pink-ribbon-on-a-white-women-vector-id1176663746?k=20&m=1176663746&s=612x612&w=0&h=6pZAa7Gl51p3TySMX0YgFkOIVgf2PX7LN9MExpYeMMc="
           alt="profileimage"
         />
-        <h4>Change Picture Picture</h4>
+        <h4>Stronger Together</h4>
       </center>
       <button className="link_button">Detalii Profil</button>
       <button className="link_button">Pagina Principala</button>

@@ -26,6 +26,7 @@ namespace Application.Features.Commands
             user.Email = request.Email;
             user.Password = request.Password;
             user.UserTypeString = request.UserType;
+            user.CreatedBy = request.CreatedBy;
 
             await repository.UpdateAsync(user);
             return user.Id;

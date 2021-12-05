@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Persistence.v1
 {
@@ -26,6 +27,16 @@ namespace Persistence.v1
                     .FirstOrDefaultAsync();
 
            //TODO validation for user?
+        }
+
+        public async Task<IEnumerable<User>> GetPatientsAsync(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentException($"{nameof(GetPatientsAsync)} user should not be null");
+            }
+
+            return await context.Users.Where(p => p.CreatedBy == user.Id).ToListAsync();
         }
     }
 }

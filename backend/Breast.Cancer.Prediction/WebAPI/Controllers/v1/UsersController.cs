@@ -51,6 +51,8 @@ namespace WebAPI.Controllers.v1
                 return BadRequest("Invalid password format!");
             }
 
+            command.CreatedBy = Guid.Parse(claims.FindFirst("id").Value);
+
             try
             {
                 return Ok(await mediator.Send(command));
@@ -83,6 +85,22 @@ namespace WebAPI.Controllers.v1
                     return Unauthorized("Username or password is incorrect!");
                 }
                 throw;
+            }
+        }
+
+        [HttpPost("/patients")]
+        public async Task<IActionResult> GetPatients([FromBody] GetPatientsByDoctorIdQuery query)
+        {
+            try
+            {
+                var patients= await mediator.Send(query);
+                return Ok(patients);
+            }
+            catch(Exception e) when (
+            e is ArgumentException
+            || e is EntityNotFoundException)
+            {
+                return BadRequest("Medic not found.");
             }
         }
 

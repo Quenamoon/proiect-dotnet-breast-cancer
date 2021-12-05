@@ -13,5 +13,7 @@ namespace Application.Features.Commands
         public string Password { get; set; }
 
         public string UserType { get; set; }
+
+        public Guid CreatedBy { get; set; }
     }
 }

@@ -13,5 +13,7 @@ namespace Application.Features.Commands
 
         [SwaggerSchema(ReadOnly = true)]
         public string UserType { get; set; }
+
+        public Guid CreatedBy { get; set; }
     }
 }

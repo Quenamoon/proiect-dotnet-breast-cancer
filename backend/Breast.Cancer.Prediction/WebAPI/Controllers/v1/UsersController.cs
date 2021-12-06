@@ -88,9 +88,20 @@ namespace WebAPI.Controllers.v1
             }
         }
 
-        [HttpPost("/patients")]
-        public async Task<IActionResult> GetPatients([FromBody] GetPatientsByDoctorIdQuery query)
+        [HttpGet("patients")]
+        [JwtAuthentication]
+        public async Task<IActionResult> GetPatients()
         {
+            var authorization = Request.Headers[HeaderNames.Authorization];
+            var token = authorization.ToString();
+            if (token == "")
+                return Forbid("You don't have permission!");
+            if (token.StartsWith("Bearer "))
+                token = token.Substring("Bearer ".Length);
+            var claims = JwtManager.GetPrincipal(token);
+            Guid userId = Guid.Parse(claims.FindFirst("id").Value);
+            GetPatientsByDoctorIdQuery query = new GetPatientsByDoctorIdQuery();
+            query.Id=userId;
             try
             {
                 var patients= await mediator.Send(query);

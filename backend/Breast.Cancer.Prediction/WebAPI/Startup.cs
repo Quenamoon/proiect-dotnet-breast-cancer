@@ -58,7 +58,7 @@ namespace WebAPI
             services.AddPersistence(Configuration);
             services.AddMediatR(typeof(LoginUserQueryHandler));
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
-            services.AddScoped(typeof(IPredictionDataRepository), typeof(PredictionDataRepository));
+            services.AddScoped(typeof(IPredictionRepository), typeof(PredictionRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PredictionGenerator\PredictionGenerator.csproj" />
     <ProjectReference Include="..\TestDomain\Domain.csproj" />
   </ItemGroup>
 

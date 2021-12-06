@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Queries
 {
-    public class GetPredictionsQuery : IRequest<IEnumerable<PredictionData>>
+    public class GetPredictionsQuery : IRequest<IEnumerable<Prediction>>
     {
     }
 }

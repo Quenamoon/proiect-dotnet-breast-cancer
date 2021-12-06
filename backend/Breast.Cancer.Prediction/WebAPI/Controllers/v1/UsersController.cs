@@ -30,7 +30,7 @@ namespace WebAPI.Controllers.v1
             var authorization = Request.Headers[HeaderNames.Authorization];
             var token = authorization.ToString();
             if (token == "")
-                return Forbid("You don't have permission to create a new user!");
+                return Unauthorized("You don't have permission to create a new user!");
             if (token.StartsWith("Bearer "))
                 token = token.Substring("Bearer ".Length);
             var claims = JwtManager.GetPrincipal(token);

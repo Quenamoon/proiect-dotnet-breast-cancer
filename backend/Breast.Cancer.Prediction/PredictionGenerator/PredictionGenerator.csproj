@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ModelTrainer\ModelTrainer.csproj" />
+    <ProjectReference Include="..\TestDomain\Domain.csproj" />
+  </ItemGroup>
+
+</Project>

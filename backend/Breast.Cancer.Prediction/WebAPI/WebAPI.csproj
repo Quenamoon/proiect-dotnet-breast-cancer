@@ -19,7 +19,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ModelTrainer\ModelTrainer.csproj" />
       <ProjectReference Include="..\PersistenceTest\Persistence.csproj" />
+      <ProjectReference Include="..\PredictionGenerator\PredictionGenerator.csproj" />
       <ProjectReference Include="..\Test\Application.csproj" />
     </ItemGroup>
 

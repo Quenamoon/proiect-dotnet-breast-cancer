@@ -2,7 +2,7 @@
 
 namespace Application.Interfaces
 {
-    public interface IPredictionDataRepository : IRepository<PredictionData>
+    public interface IPredictionRepository : IRepository<Prediction>
     {
         
     }

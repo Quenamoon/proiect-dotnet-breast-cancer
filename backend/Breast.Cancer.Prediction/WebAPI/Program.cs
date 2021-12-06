@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using ML;
 
 namespace WebAPI
 {
@@ -7,6 +8,16 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
+            try
+            {
+                ModelTrainer.Train();
+                ModelLoader.Load();
+            }
+            catch(System.Exception e)
+            {
+                System.Console.WriteLine("[ML Model Trainer Error] Please Debug!");
+                System.Console.WriteLine(e.ToString());
+            }
             CreateHostBuilder(args).Build().Run();
         }
 

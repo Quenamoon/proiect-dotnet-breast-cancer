@@ -9,9 +9,9 @@ using AppContext = Persistence.Context.AppContext;
 
 namespace Persistence.v1
 {
-    public class PredictionDataRepository : Repository<PredictionData>, IPredictionDataRepository
+    public class PredictionRepository : Repository<Prediction>, IPredictionRepository
     { 
-        public PredictionDataRepository(AppContext context) : base(context)
+        public PredictionRepository(AppContext context) : base(context)
         {
             
         }

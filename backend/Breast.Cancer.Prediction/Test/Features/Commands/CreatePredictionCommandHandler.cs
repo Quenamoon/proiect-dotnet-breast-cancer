@@ -1,23 +1,39 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Domain.Exceptions;
 using MediatR;
+using ML;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Commands
 {
-    public class CreatePredictionCommandHandler : IRequestHandler<CreatePredictionCommand, PredictionData>
+    public class CreatePredictionCommandHandler : IRequestHandler<CreatePredictionCommand, Prediction>
     {
-        private readonly IPredictionDataRepository repository;
+        private readonly IPredictionRepository repository;
+        private readonly IUserRepository userRepository;
 
-        public CreatePredictionCommandHandler(IPredictionDataRepository repository)
+        public CreatePredictionCommandHandler(IPredictionRepository repository, IUserRepository userRepository)
         {
             this.repository = repository;
+            this.userRepository = userRepository;
         }
-        public async Task<PredictionData> Handle(CreatePredictionCommand request, CancellationToken cancellationToken)
+
+        public async Task<Prediction> Handle(CreatePredictionCommand request, CancellationToken cancellationToken)
         {
-            var prediction = new PredictionData
+            User user = await userRepository.GetByIdAsync(request.patientID);
+            if(user == null)
+            {
+                throw new EntityNotFoundException();
+            }
+
+            if(user.UserType != UserType.Patient)
+            {
+                throw new InvalidPermissionException("You cannot access this feature!");
+            }
+
+            var prediction = new Prediction
             {
                 Radius1 = request.Radius,
                 Texture1 = request.Texture,
@@ -51,11 +67,14 @@ namespace Application.Features.Commands
                 FractalDimension3 = request.FractalDimension
             };
 
-            /* TODO Apelez modul ML pe datele de mai sus */
-            prediction.Diagnosis = false;
+            var diagnosisPredictor = DiagnosisPredictor.GetInstance();
+
+            prediction.Diagnosis = diagnosisPredictor.Predict(prediction);
             prediction.PredictionDate = DateTime.Now;
+            prediction.patientID = request.patientID;
 
             await repository.AddAsync(prediction);
+
             return prediction;
         }
     }

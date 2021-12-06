@@ -1,9 +1,12 @@
 using Application.Features.Commands;
 using Application.Features.Queries;
+using Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Threading.Tasks;
+using WebAPI.Controllers.v1.Filters;
 
 namespace WebAPI.Controllers.v1
 {
@@ -16,15 +19,24 @@ namespace WebAPI.Controllers.v1
         }
 
         [HttpPost]
+        [JwtAuthentication]
         public async Task<IActionResult> Create([FromBody] CreatePredictionCommand command)
         {
+            var authorization = Request.Headers[HeaderNames.Authorization];
+            var token = authorization.ToString();
+            if (token == "")
+                return Unauthorized("You don't have access to this feature");
             try
             {
                 return Ok(await mediator.Send(command));
             }
-            catch (ArgumentException e)
+            catch (EntityNotFoundException e)
             {
-                return Conflict("Email already in use!");
+                return BadRequest("Invalid id!");
+            }
+            catch(InvalidPermissionException e)
+            {
+                return Forbid(e.Message);
             }
         }
 

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Commands
 {
-    public class CreatePredictionCommand : IRequest<PredictionData>
+    public class CreatePredictionCommand : IRequest<Prediction>
     {
+        public Guid patientID { get; set; }
         public float Radius { get; set; }
         public float Texture { get; set; }
         public float Perimeter { get; set; }

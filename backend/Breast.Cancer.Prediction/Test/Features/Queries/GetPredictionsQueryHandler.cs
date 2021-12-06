@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Queries
 {
-    public class GetPredictionsQueryHandler : IRequestHandler<GetPredictionsQuery, IEnumerable<PredictionData>>
+    public class GetPredictionsQueryHandler : IRequestHandler<GetPredictionsQuery, IEnumerable<Prediction>>
     {
-        private readonly IPredictionDataRepository repository;
+        private readonly IPredictionRepository repository;
 
-        public GetPredictionsQueryHandler(IPredictionDataRepository repository)
+        public GetPredictionsQueryHandler(IPredictionRepository repository)
         {
             this.repository = repository;
         }
-        public async Task<IEnumerable<PredictionData>> Handle(GetPredictionsQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Prediction>> Handle(GetPredictionsQuery request, CancellationToken cancellationToken)
         {
             return await repository.GetAllAsync();
         }

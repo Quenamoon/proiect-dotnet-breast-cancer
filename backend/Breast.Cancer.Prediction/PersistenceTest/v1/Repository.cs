@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using System;
 using System.Threading.Tasks;
+using AppContext = Persistence.Context.AppContext;
 
 namespace Persistence.v1
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        protected readonly UserContext context;
+        protected readonly AppContext context;
 
-        public Repository(UserContext context)
+        public Repository(AppContext context)
         {
             this.context = context;
         }

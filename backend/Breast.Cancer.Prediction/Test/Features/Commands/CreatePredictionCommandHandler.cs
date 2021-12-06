@@ -2,15 +2,12 @@
 using Domain.Entities;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Commands
 {
-    public class CreatePredictionCommandHandler : IRequestHandler<CreatePredictionCommand, Guid>
+    public class CreatePredictionCommandHandler : IRequestHandler<CreatePredictionCommand, PredictionData>
     {
         private readonly IPredictionDataRepository repository;
 
@@ -18,11 +15,10 @@ namespace Application.Features.Commands
         {
             this.repository = repository;
         }
-        public async Task<Guid> Handle(CreatePredictionCommand request, CancellationToken cancellationToken)
+        public async Task<PredictionData> Handle(CreatePredictionCommand request, CancellationToken cancellationToken)
         {
             var prediction = new PredictionData
             {
-                Diagnosis = false,
                 Radius1 = request.Radius,
                 Texture1 = request.Texture,
                 Perimeter1 = request.Perimeter,
@@ -32,7 +28,7 @@ namespace Application.Features.Commands
                 Concavity1 = request.Concavity,
                 ConcavePoints1 = request.ConcavePoints,
                 Symmetry1 = request.Symmetry,
-                FractalDimension1 = 0.06503f,
+                FractalDimension1 = request.FractalDimension,
                 Radius2 = request.Radius,
                 Texture2 = request.Texture,
                 Perimeter2 = request.Perimeter,
@@ -54,8 +50,13 @@ namespace Application.Features.Commands
                 Symmetry3 = request.Symmetry,
                 FractalDimension3 = request.FractalDimension
             };
+
+            /* TODO Apelez modul ML pe datele de mai sus */
+            prediction.Diagnosis = false;
+            prediction.PredictionDate = DateTime.Now;
+
             await repository.AddAsync(prediction);
-            return prediction.Id;
+            return prediction;
         }
     }
 }

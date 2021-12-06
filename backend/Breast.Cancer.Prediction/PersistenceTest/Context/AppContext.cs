@@ -1,23 +1,22 @@
-using System.Threading.Tasks;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Persistence.Context
 {
-    public class UserContext : DbContext, IApplicationContext
+    public class AppContext : DbContext, IApplicationContext
     {
-        public UserContext()
+        public AppContext()
         {
 
         }
-        public UserContext(DbContextOptions<UserContext> options) : base(options)
+        public AppContext(DbContextOptions<AppContext> options) : base(options)
         {
-            
+
         }
         public DbSet<User> Users { get; set; }
         public DbSet<PredictionData> Predictions { get; set; }
-
         public async Task<int> SaveChangesAsync()
         {
             return await base.SaveChangesAsync();

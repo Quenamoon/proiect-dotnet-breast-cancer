@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using AppContext = Persistence.Context.AppContext;
 
 namespace Persistence.v1
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        public UserRepository(UserContext context): base(context)
+        public UserRepository(AppContext context): base(context)
         {
         }
 

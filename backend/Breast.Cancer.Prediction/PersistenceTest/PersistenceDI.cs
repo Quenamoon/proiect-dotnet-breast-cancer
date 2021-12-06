@@ -10,11 +10,8 @@ namespace Persistence
     {
         public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<UserContext>(options => options.UseNpgsql(configuration.GetConnectionString("DatabaseConnection"), b => b.MigrationsAssembly(typeof(UserContext).Assembly.FullName)));
-            services.AddScoped<IApplicationContext>(provider => provider.GetService<UserContext>());
-
-            services.AddDbContext<PredictionDataContext>(options => options.UseNpgsql(configuration.GetConnectionString("DatabaseConnection"), b => b.MigrationsAssembly(typeof(PredictionDataContext).Assembly.FullName)));
-            services.AddScoped<IApplicationContext>(provider => provider.GetService<PredictionDataContext>());
+            services.AddDbContext<AppContext>(options => options.UseNpgsql(configuration.GetConnectionString("DatabaseConnection"), b => b.MigrationsAssembly(typeof(AppContext).Assembly.FullName)));
+            services.AddScoped<IApplicationContext>(provider => provider.GetService<AppContext>());
         }
     }
 }

@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
 using Domain.Entities;
-using Persistence.Context;
+using AppContext = Persistence.Context.AppContext;
 
 namespace Infrastructure.Tests
 {
     public class DatabaseInitializer
     {
-        public static void Initialize(UserContext context)
+        public static void Initialize(AppContext context)
         {
             if (context.Users.Any())
                 return;
             Seed(context);
         }
 
-        private static void Seed(UserContext context)
+        private static void Seed(AppContext context)
         {
             var users = new[]
             {

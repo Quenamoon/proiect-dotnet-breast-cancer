@@ -19,12 +19,12 @@ const Register = () => {
     //Test
     const data = { email: details.userEmail, password: details.userPassword, firstName: details.userFirstName, lastName: details.userLastName, userType: userType === "Admin" ? "Doctor" : "Patient" }
     try {
-      const response = await fetch('https://localhost:44333/api/users', {
+      const response = await fetch('https://localhost:5001/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': 'Bearer ' + JWTToken
+          'Authorization': JWTToken
         },
         body: JSON.stringify(data)
       })

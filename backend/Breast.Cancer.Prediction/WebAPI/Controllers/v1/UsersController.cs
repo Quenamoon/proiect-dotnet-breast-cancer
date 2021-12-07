@@ -5,6 +5,7 @@ using Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Net.Http.Headers;
@@ -28,16 +29,13 @@ namespace WebAPI.Controllers.v1
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
             var authorization = Request.Headers[HeaderNames.Authorization];
-            var token = authorization.ToString();
-            if (token == "")
+            if (StringValues.IsNullOrEmpty(authorization))
                 return Unauthorized("You don't have permission to create a new user!");
-            if (token.StartsWith("Bearer "))
-                token = token.Substring("Bearer ".Length);
-            var claims = JwtManager.GetPrincipal(token);
+            var claims = JwtManager.GetPrincipal(authorization);
             UserType loggedType = claims.FindFirst("userType").Value.ParseEnum<UserType>();
             if (loggedType == UserType.Patient)
             {
-                return Forbid("You don't have permission to create a new user!");
+                return Unauthorized("You don't have permission to create a new user!");
             }
             command.UserType = ((loggedType == UserType.Admin) ? UserType.Doctor : UserType.Patient).ToString();
 
@@ -93,12 +91,9 @@ namespace WebAPI.Controllers.v1
         public async Task<IActionResult> GetPatients()
         {
             var authorization = Request.Headers[HeaderNames.Authorization];
-            var token = authorization.ToString();
-            if (token == "")
-                return Forbid("You don't have permission!");
-            if (token.StartsWith("Bearer "))
-                token = token.Substring("Bearer ".Length);
-            var claims = JwtManager.GetPrincipal(token);
+            if (StringValues.IsNullOrEmpty(authorization))
+                return Unauthorized("You don't have permission!");
+            var claims = JwtManager.GetPrincipal(authorization);
             Guid userId = Guid.Parse(claims.FindFirst("id").Value);
             GetPatientsByDoctorIdQuery query = new GetPatientsByDoctorIdQuery();
             query.Id=userId;

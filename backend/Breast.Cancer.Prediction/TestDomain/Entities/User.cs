@@ -12,6 +12,10 @@ namespace Domain.Entities
         public string Email { get; set; }
         [Column("password")]
         public string Password { get; set; }
+        [Column("lastname")]
+        public string? LastName { get; set; }
+        [Column("firstname")]
+        public string? FirstName { get; set; }
         [Column("usertype")]
         public string UserTypeString
         {

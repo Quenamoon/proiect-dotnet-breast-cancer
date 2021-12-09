@@ -31,6 +31,10 @@ namespace Application.Features.Commands
                 UserTypeString = request.UserType,
                 CreatedBy = request.CreatedBy
             };
+            if(request.FirstName != "string")
+                user.FirstName = request.FirstName;
+            if(request.LastName != "string")
+                user.LastName = request.LastName;
             await repository.AddAsync(user);
             return user.Id;
         }

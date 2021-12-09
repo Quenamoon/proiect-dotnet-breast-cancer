@@ -27,7 +27,10 @@ namespace Application.Features.Commands
             user.Password = request.Password;
             user.UserTypeString = request.UserType;
             user.CreatedBy = request.CreatedBy;
-
+            if (request.FirstName != "string")
+                user.FirstName = request.FirstName;
+            if (request.LastName != "string")
+                user.LastName = request.LastName;
             await repository.UpdateAsync(user);
             return user.Id;
         }

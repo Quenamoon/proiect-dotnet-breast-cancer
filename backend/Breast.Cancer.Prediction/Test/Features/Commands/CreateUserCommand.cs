@@ -11,6 +11,10 @@ namespace Application.Features.Commands
 
         public string Password { get; set; }
 
+        public string LastName { get; set; }
+
+        public string FirstName { get; set; }
+
         [SwaggerSchema(ReadOnly = true)]
         public string UserType { get; set; }
 

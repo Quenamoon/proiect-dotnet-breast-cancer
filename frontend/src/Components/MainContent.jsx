@@ -1,49 +1,45 @@
 import "./MainContent.css";
 import "./MainContentTable.css";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const MainContent = () => {
+  let [patientsList, setPatientsList] = useState([]);
+  let currentDoctorToken = useSelector((state) => state.auth.JWToken);
+  const fetchPatients = async () => {
+    try {
+      const response = await fetch(
+        "https://localhost:5001/api/users/patients",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": currentDoctorToken,
+          }
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Patients Get Request Went Wrong");
+      }
+      return response.json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(async () => {
+    const patients = await fetchPatients()
+    let counter = 1
+    setPatientsList(patients.map((elem) => ({
+      count: (counter++),
+      id: elem.id,
+      firstName: elem.firstName,
+      lastName: elem.lastName
+    })))
+  }, []);
+
   return (
     <div className="content">
-      {/* <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $("#tr-btn1-1").hide();
-            $("#tr-btn1-2").hide();
-            $("#tr-btn1-3").hide();
-            $("#tr-btn2-1").hide();
-            $("#tr-btn2-2").hide();
-            $("#tr-btn2-3").hide();
-            $("#btn1").click(function () {
-                $('.buttonInactive').not(this).removeClass('buttonInactive');
-                $(this).toggleClass('buttonActive');
-                if ($(this).hasClass("buttonActive")) {
-                    $("#tr-btn1-1").show();
-                    $("#tr-btn1-2").show();
-                    $("#tr-btn1-3").show();
-                }
-                else {
-                  $("#tr-btn1-1").hide();
-                  $("#tr-btn1-2").hide();
-                  $("#tr-btn1-3").hide();
-                }
-            });
-            $("#btn2").click(function () {
-                $('.buttonInactive').not(this).removeClass('buttonInactive');
-                $(this).toggleClass('buttonActive');
-                if ($(this).hasClass("buttonActive")) {
-                    $("#tr-btn2-1").show();
-                    $("#tr-btn2-2").show();
-                    $("#tr-btn2-3").show();
-                }
-                else {
-                    $("#tr-btn2-1").hide();
-                    $("#tr-btn2-2").hide();
-                    $("#tr-btn2-3").hide();
-                }
-            });
-        });
-        
-    </script> */}
       <div className="content-container">
         <div className="flex-child prediction">
           <button className="prediction-button" role="GenerateButton">
@@ -59,84 +55,6 @@ const MainContent = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>01-01-2020</td>
-                  <td>Pozitiv</td>
-                  <td>
-                    <button
-                      id="btn1"
-                      type="button"
-                      className="expand-button buttonInactive"
-                    >
-                      Expand details
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
                 <tr>
                   <td>Smth 1</td>
                   <td>Smth 2</td>
@@ -197,118 +115,21 @@ const MainContent = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Maria</td>
-                  <td>Anders</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Francisco</td>
-                  <td>Chang</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Roland</td>
-                  <td>Mendel</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Helen</td>
-                  <td>Bennett</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Yoshi</td>
-                  <td>Tannamuri</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Giovanni</td>
-                  <td>Rovelli</td>
-                  <td>
-                    <button className="pacient-button">Show prediction</button>
-                  </td>
-                </tr>
+                {
+                  patientsList.map((patient) => {
+                    return (
+                      <tr key={patient.id}>
+                        <td>{patient.count}</td>
+                        <td>{patient.firstName}</td>
+                        <td>{patient.lastName}</td>
+                        <td>
+                          <button className="pacient-button">Show predictions</button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                }
+
               </tbody>
             </table>
           </div>

@@ -46,13 +46,14 @@ const Register = () => {
     }
   };
 
-  return (
-    <React.Fragment>
-      <div className="wrapper">
-        <RegisterForm registerHandler={registerHandler} error={error} success={successMessage} />
-      </div>
-    </React.Fragment>
-  );
+    return ( <React.Fragment >
+        <div className = "wrapper" >
+            <RegisterForm registerHandler = { registerHandler }
+            error = { error }
+            success = { successMessage }
+            /> </div> 
+        </React.Fragment>
+    );
 };
 
 export default Register;

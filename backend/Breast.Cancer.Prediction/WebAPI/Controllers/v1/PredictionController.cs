@@ -40,10 +40,10 @@ namespace WebAPI.Controllers.v1
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("/api/patients/{Id}/predictions")]
+        public async Task<IActionResult> Get([FromRoute] GetPredictionsByPatientIdQuery query)
         {
-            return Ok(await mediator.Send(new GetPredictionsQuery()));
+            return Ok(await mediator.Send(query));
         }
 
         /*

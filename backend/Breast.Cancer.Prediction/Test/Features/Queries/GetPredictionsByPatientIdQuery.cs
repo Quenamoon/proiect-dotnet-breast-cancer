@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Queries
 {
-    public class GetPredictionsQuery : IRequest<IEnumerable<Prediction>>
+    public class GetPredictionsByPatientIdQuery : IRequest<IEnumerable<Prediction>>
     {
+        public Guid Id { get; set; }
     }
 }

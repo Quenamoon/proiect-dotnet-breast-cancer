@@ -1,11 +1,13 @@
 import "./MainContent.css";
 import "./MainContentTable.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const MainContent = () => {
   let [patientsList, setPatientsList] = useState([]);
   let currentDoctorToken = useSelector((state) => state.auth.JWToken);
+  let [selectedPatientId, setSelectedPatientId] = useState("");
+  let [predictionList, setPredictionList] = useState([])
   const fetchPatients = async () => {
     try {
       const response = await fetch(
@@ -27,6 +29,27 @@ const MainContent = () => {
     }
   }
 
+  const fetchPatientPredictions = async (patientId) => {
+    try {
+      const response = await fetch(
+        "https://localhost:5001/api/patients/" + patientId + "/predictions",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": currentDoctorToken,
+          }
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Patient Predictions Get Request Went Wrong");
+      }
+      return response.json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(async () => {
     const patients = await fetchPatients()
     let counter = 1
@@ -38,6 +61,16 @@ const MainContent = () => {
     })))
   }, []);
 
+  const showPatientPredictionsHandler = async (patientId) => {
+    const predictions = await fetchPatientPredictions(patientId)
+    setPredictionList(
+      predictions.map(prediction => ({
+        id: prediction.id,
+        date: prediction.predictionDate.substring(0, 10),
+        diagnosis: prediction.diagnosis == "true" ? "pozitiv" : "negativ"
+      })))
+  }
+
   return (
     <div className="content">
       <div className="content-container">
@@ -45,54 +78,39 @@ const MainContent = () => {
           <button className="prediction-button" role="GenerateButton">
             Generate prediction
           </button>
-          <div className="table-container">
-            <table className="table-structure">
-              <thead>
-                <tr>
-                  <th>Prediction Date</th>
-                  <th>Result</th>
-                  <th>See more</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr>
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-
-                <tr>
-                  <td>02-02-2021</td>
-                  <td>Negativ</td>
-                  <td>
-                    <button id="btn2" type="button" className="expand-button">
-                      Expand details
-                    </button>
-                  </td>
-                </tr>
-                <tr id="tr-btn2-1">
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr id="tr-btn2-2">
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-                <tr id="tr-btn2-3">
-                  <td>Smth 1</td>
-                  <td>Smth 2</td>
-                  <td>Smth 3</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {
+            predictionList !== [] ?
+              <div className="table-container">
+                <table className="table-structure">
+                  <thead>
+                    <tr>
+                      <th>Prediction Date</th>
+                      <th>Result</th>
+                      <th>See more</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      predictionList.map((prediction) => {
+                        return (
+                          <tr key={prediction.id}>
+                            <td>{prediction.date}</td>
+                            <td>{prediction.diagnosis}</td>
+                            <td>
+                              <button id="btn2" type="button" className="expand-button">
+                                Expand details
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    }
+                  </tbody>
+                </table>
+              </div>
+              :
+              <p>No patient selected.</p>
+          }
         </div>
 
         <div className="flex-child patient-list">
@@ -123,7 +141,7 @@ const MainContent = () => {
                         <td>{patient.firstName}</td>
                         <td>{patient.lastName}</td>
                         <td>
-                          <button className="pacient-button">Show predictions</button>
+                          <button className="pacient-button" onClick={() => { showPatientPredictionsHandler(patient.id) }}>Show predictions</button>
                         </td>
                       </tr>
                     );
